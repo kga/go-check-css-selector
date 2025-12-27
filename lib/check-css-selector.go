@@ -31,7 +31,9 @@ func (opts *selectorOpts) run() *checkers.Checker {
 	if err != nil {
 		return checkers.Unknown(fmt.Sprint(err))
 	}
-	// TODO: check status code
+	if res.StatusCode >= 400 {
+		return checkers.Critical(fmt.Sprintf("HTTP %d: %s", res.StatusCode, http.StatusText(res.StatusCode)))
+	}
 	defer res.Body.Close()
 
 	doc, err := goquery.NewDocumentFromReader(res.Body)
