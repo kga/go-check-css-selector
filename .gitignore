@@ -18,3 +18,5 @@
 # vendor/
 
 go-check-css-selector
+# Added by goreleaser init:
+dist/
