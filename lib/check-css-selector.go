@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/jessevdk/go-flags"
@@ -27,11 +28,30 @@ func Do() {
 }
 
 func (opts *selectorOpts) run() *checkers.Checker {
-	res, err := http.Get(opts.Url)
+	client := &http.Client{
+		Timeout: 30 * time.Second,
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			if len(via) >= 5 {
+				return fmt.Errorf("stopped after %d redirects", len(via))
+			}
+			return nil
+		},
+	}
+
+	req, err := http.NewRequest("GET", opts.Url, nil)
 	if err != nil {
 		return checkers.Unknown(fmt.Sprint(err))
 	}
-	// TODO: check status code
+
+	req.Header.Set("User-Agent", "go-check-css-selector/1.0")
+
+	res, err := client.Do(req)
+	if err != nil {
+		return checkers.Unknown(fmt.Sprint(err))
+	}
+	if res.StatusCode >= 400 {
+		return checkers.Critical(fmt.Sprintf("HTTP %d: %s", res.StatusCode, http.StatusText(res.StatusCode)))
+	}
 	defer res.Body.Close()
 
 	doc, err := goquery.NewDocumentFromReader(res.Body)
