@@ -1,11 +1,11 @@
-# check-css-selector
+# go-check-css-selector
 
 Check if a CSS selector exists in the HTML DOM of a specified URL.
 
 ## Synopsis
 
 ```
-check-css-selector -U <URL> -S <CSS_SELECTOR>
+go-check-css-selector -U <URL> -S <CSS_SELECTOR>
 ```
 
 ## Description
@@ -36,7 +36,7 @@ go build
 ### Command line
 
 ```
-check-css-selector -U https://example.com -S "div.content"
+go-check-css-selector -U https://example.com -S "div.content"
 ```
 
 ### With mackerel-agent
@@ -44,8 +44,8 @@ check-css-selector -U https://example.com -S "div.content"
 Add the following configuration to your `mackerel-agent.conf`:
 
 ```
-[plugin.checks.check-css-selector-sample]
-command = ["check-css-selector", "-U", "https://example.com", "-S", "div.content"]
+[plugin.checks.go-check-css-selector-sample]
+command = ["go-check-css-selector", "-U", "https://example.com", "-S", "div.content"]
 ```
 
 ## Options
@@ -59,17 +59,17 @@ command = ["check-css-selector", "-U", "https://example.com", "-S", "div.content
 
 Check if a specific element exists on a page:
 ```
-check-css-selector -U https://example.com -S "#main-content"
+go-check-css-selector -U https://example.com -S "#main-content"
 ```
 
 Check for a button with a specific class:
 ```
-check-css-selector -U https://example.com -S "button.submit-btn"
+go-check-css-selector -U https://example.com -S "button.submit-btn"
 ```
 
 Check for nested elements:
 ```
-check-css-selector -U https://example.com -S "div.header nav.menu ul li"
+go-check-css-selector -U https://example.com -S "div.header nav.menu ul li"
 ```
 
 ## Author
